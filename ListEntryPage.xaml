@@ -4,21 +4,17 @@
              x:Class="Andriesei_Tudor_Lab7.ListEntryPage"
              Title="ListEntryPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Addc Shopping List" Clicked="OnShopListAddedClicked"/>
+        <ToolbarItem Text="Add Shopping List"
+ Clicked="OnShopListAddedClicked" />
     </ContentPage.ToolbarItems>
-
-
     <ListView x:Name="listView"
-          Margin="20"
-          ItemSelected="OnListViewItemsSelected">
+ Margin="20"
+ ItemSelected="OnListViewItemSelected">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <TextCell Text="{Binding Description}"
-                      Detail="{Binding Date}" />
+ Detail="{Binding Date}" />
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
 </ContentPage>
-    
-
- 
