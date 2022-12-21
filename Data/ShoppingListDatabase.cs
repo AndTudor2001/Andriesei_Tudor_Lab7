@@ -18,6 +18,26 @@ namespace Andriesei_Tudor_Lab7.Data
             _database.CreateTableAsync<ShopList>().Wait();
             _database.CreateTableAsync<Product>().Wait();
             _database.CreateTableAsync<ListProduct>().Wait();
+            _database.CreateTableAsync<Shop>().Wait();
+        }
+        public Task<List<Shop>> GetShopsAsync()
+        {
+            return _database.Table<Shop>().ToListAsync();
+        }
+        public Task<int>SaveShopAsync(Shop shop)
+        {
+            if(shop.ID!=0)
+            {
+                return _database.UpdateAsync(shop);
+            }
+            else
+            {
+                return _database.InsertAsync(shop);
+            }    
+        }
+        public Task<int>DeleteShopAsync(Shop shop)
+        {
+            return _database.DeleteAsync(shop);
         }
         public Task<int> SaveProductAsync(Product product)
         {
@@ -79,6 +99,11 @@ namespace Andriesei_Tudor_Lab7.Data
         {
             
             return _database.DeleteAsync(listp);
+        }
+
+        public Task<ListProduct> GetListProductAsync(int shoplistid, int prodid)
+        {
+            return _database.Table<ListProduct>().Where(i => (i.ShopListID == shoplistid && i.ProductID == prodid)).FirstOrDefaultAsync();
         }
         public Task<List<Product>> GetListProductsAsync(int shoplistid)
         {

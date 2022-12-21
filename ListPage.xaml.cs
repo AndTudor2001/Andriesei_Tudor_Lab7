@@ -13,6 +13,8 @@ public partial class ListPage : ContentPage
     {
         var slist = (ShopList)BindingContext;
         slist.Date = DateTime.UtcNow;
+        Shop selectedShop=(ShopPicker.SelectedItem as Shop);
+        slist.ShopID = selectedShop.ID;
         await App.Database.SaveShopListAsync(slist);
         await Navigation.PopAsync();
     }
@@ -33,13 +35,18 @@ public partial class ListPage : ContentPage
     }
     async void OnDeleteProductListClicked(object sender, EventArgs e)
     {
-           var lp = listView.SelectedItem as ListProduct;
-            await App.Database.DeleteListProductAsync(lp);
-            await Navigation.PopAsync();
+        var slist = (ShopList)BindingContext;
+        var p = listView.SelectedItem as Product;
+        var lp = App.Database.GetListProductAsync(slist.ID, p.ID);
+        await App.Database.DeleteListProductAsync(await lp);
+        await Navigation.PopAsync();
     }
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        var items=await App.Database.GetShopsAsync();
+        ShopPicker.ItemsSource = (System.Collections.IList)items;
+        ShopPicker.ItemDisplayBinding=new Binding("ShopDetails");
         var shopl = (ShopList)BindingContext;
 
         listView.ItemsSource = await App.Database.GetListProductsAsync(shopl.ID);
